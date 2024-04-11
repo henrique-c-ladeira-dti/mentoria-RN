@@ -6,28 +6,50 @@
  */
 
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text} from 'react-native';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {useGetCharacters} from './src/hooks/useGetCharacters';
+import {Card} from './src/components/Card/Card';
 
 const App: React.FC = () => {
   const {characters, error, loading} = useGetCharacters();
 
   return (
     <SafeAreaView>
-      <ScrollView>
-        {loading && <Text style={style.text}>Loading...</Text>}
-        {error && <Text style={style.text}>Error</Text>}
-        {characters.map(item => (
-          <Text style={style.text}>{item.name}</Text>
-        ))}
+      <ScrollView style={styles.container}>
+        {loading && <ActivityIndicator size="large" />}
+        {error && <Text>Error</Text>}
+        <View style={styles.listContainer}>
+          {characters.map(item => (
+            <Card
+              key={item.name}
+              image={item.image}
+              gender={item.gender}
+              name={item.name}
+              species={item.species}
+              status={item.status}
+            />
+          ))}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-const style = StyleSheet.create({
-  text: {
-    fontSize: 50,
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 16,
+  },
+  listContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
   },
 });
 
