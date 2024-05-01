@@ -1,9 +1,4 @@
-type Info = {
-  count: number;
-  pages: number;
-  next: string;
-  prev: string;
-};
+import {Info} from './info';
 
 export type CharacterResult = {
   id: number;

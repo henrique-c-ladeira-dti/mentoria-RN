@@ -4,53 +4,22 @@
  *
  * @format
  */
-
+import 'react-native-gesture-handler';
 import React from 'react';
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {useGetCharacters} from './src/hooks/useGetCharacters';
-import {Card} from './src/components/Card/Card';
+import {CharacterListScreen} from './src/screens/CharacterListScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {EpisodesListScreen} from './src/screens/EpisodesListScreen';
 
-const App: React.FC = () => {
-  const {characters, error, loading} = useGetCharacters();
+const BottomTab = createBottomTabNavigator();
 
-  return (
-    <SafeAreaView>
-      <ScrollView style={styles.container}>
-        {loading && <ActivityIndicator size="large" />}
-        {error && <Text>Error</Text>}
-        <View style={styles.listContainer}>
-          {characters.map(item => (
-            <Card
-              key={item.name}
-              image={item.image}
-              gender={item.gender}
-              name={item.name}
-              species={item.species}
-              status={item.status}
-            />
-          ))}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-  },
-  listContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-});
+const App: React.FC = () => (
+  <NavigationContainer>
+    <BottomTab.Navigator>
+      <BottomTab.Screen name="Character List" component={CharacterListScreen} />
+      <BottomTab.Screen name="Episodes List" component={EpisodesListScreen} />
+    </BottomTab.Navigator>
+  </NavigationContainer>
+);
 
 export default App;

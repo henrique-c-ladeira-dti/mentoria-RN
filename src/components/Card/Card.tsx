@@ -1,5 +1,11 @@
 import React from 'react';
-import {Container, ImageSC, TextSC} from './Card.styled';
+import {
+  Container,
+  ImageSC,
+  LabelContainer,
+  LabelText,
+  ValueText,
+} from './Card.styled';
 
 type CardProps = {
   name: string;
@@ -12,9 +18,19 @@ type CardProps = {
 export const Card: React.FC<CardProps> = props => (
   <Container>
     <ImageSC source={{uri: props.image}} />
-    <TextSC>Name: {props.name}</TextSC>
-    <TextSC>Status: {props.status}</TextSC>
-    <TextSC>Species: {props.species}</TextSC>
-    <TextSC>Gender: {props.gender}</TextSC>
+    <LabelContainer>
+      <LabelText>
+        Name: <ValueText>{props.name}</ValueText>
+      </LabelText>
+      <LabelText>
+        Status: <ValueText>{props.status}</ValueText>
+      </LabelText>
+      <LabelText>
+        Species: <ValueText>{props.species}</ValueText>
+      </LabelText>
+      <LabelText>
+        Gender: <ValueText>{props.gender}</ValueText>
+      </LabelText>
+    </LabelContainer>
   </Container>
 );
