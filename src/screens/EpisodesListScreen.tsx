@@ -22,7 +22,7 @@ export const EpisodesListScreen: React.FC = () => {
             <>
               <Text>name: {item.name}</Text>
               <Text>air date: {item.air_date}</Text>
-              {item?.characters?.map((elem, idx) => (
+              {item.characters.map((elem, idx) => (
                 <Text>
                   character {idx + 1}: {elem}
                 </Text>
