@@ -12,7 +12,7 @@ export const useGetEpisodes = () => {
       setLoading(true);
       setError(false);
       const response = await axios<EpisodesApiResponse>({
-        url: 'https://rickandmortyapi.com/api/character',
+        url: 'https://rickandmortyapi.com/api/episode',
       });
       const {data} = response;
       setEpisodes(data.results);
