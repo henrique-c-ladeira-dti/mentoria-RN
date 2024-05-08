@@ -8,10 +8,20 @@ import {
   Text,
   View,
 } from 'react-native';
-import {Card} from '../components/Card/Card';
+import {Card, CardProps} from '../components/Card/Card';
 
 export const CharacterListScreen: React.FC = () => {
   const {characters, error, loading} = useGetCharacters();
+
+  const charactersCardFields: CardProps[] = characters.map(item => ({
+    image: item.image,
+    fields: [
+      {label: 'Name', value: item.name},
+      {label: 'Gender', value: item.gender},
+      {label: 'Species', value: item.species},
+      {label: 'Status', value: item.status},
+    ],
+  }));
 
   return (
     <SafeAreaView>
@@ -19,15 +29,8 @@ export const CharacterListScreen: React.FC = () => {
         {loading && <ActivityIndicator size="large" />}
         {error && <Text>Error</Text>}
         <View style={styles.listContainer}>
-          {characters.map(item => (
-            <Card
-              key={item.name}
-              image={item.image}
-              gender={item.gender}
-              name={item.name}
-              species={item.species}
-              status={item.status}
-            />
+          {charactersCardFields.map(item => (
+            <Card key={item.image} image={item.image} fields={item.fields} />
           ))}
         </View>
       </ScrollView>

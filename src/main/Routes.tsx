@@ -1,19 +1,12 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-import 'react-native-gesture-handler';
 import React from 'react';
-import {CharacterListScreen} from './src/screens/CharacterListScreen';
+import {CharacterListScreen} from '../screens/CharacterListScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {EpisodesListScreen} from './src/screens/EpisodesListScreen';
+import {EpisodesListScreen} from '../screens/EpisodesListScreen';
 
 const BottomTab = createBottomTabNavigator();
 
-const App: React.FC = () => (
+export const Routes: React.FC = () => (
   <NavigationContainer>
     <BottomTab.Navigator>
       <BottomTab.Screen name="Character List" component={CharacterListScreen} />
@@ -21,5 +14,3 @@ const App: React.FC = () => (
     </BottomTab.Navigator>
   </NavigationContainer>
 );
-
-export default App;

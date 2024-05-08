@@ -8,9 +8,18 @@ import {
   View,
 } from 'react-native';
 import {useGetEpisodes} from '../hooks/useGetEpisodes';
+import {Card, CardProps} from '../components/Card/Card';
 
 export const EpisodesListScreen: React.FC = () => {
   const {episodes, error, loading} = useGetEpisodes();
+
+  const episodesCardFields: CardProps[] = episodes.map(item => ({
+    fields: [
+      {label: 'Name', value: item.name},
+      {label: 'Episode', value: item.episode},
+      {label: 'Characters', value: item.characters.join(', ')},
+    ],
+  }));
 
   return (
     <SafeAreaView>
@@ -18,17 +27,8 @@ export const EpisodesListScreen: React.FC = () => {
         {loading && <ActivityIndicator size="large" />}
         {error && <Text>Error</Text>}
         <View style={styles.listContainer}>
-          {episodes.map(item => (
-            <>
-              <Text>name: {item.name}</Text>
-              <Text>air date: {item.air_date}</Text>
-              {item.characters.map((elem, idx) => (
-                <Text>
-                  character {idx + 1}: {elem}
-                </Text>
-              ))}
-              <Text>created: {item.created}</Text>
-            </>
+          {episodesCardFields.map(item => (
+            <Card key={item.fields?.[0]?.value} fields={item.fields} />
           ))}
         </View>
       </ScrollView>
