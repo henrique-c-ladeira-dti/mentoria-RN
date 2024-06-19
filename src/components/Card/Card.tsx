@@ -7,7 +7,7 @@ import {
   ValueText,
 } from './Card.styled';
 
-type LabelValue = {
+export type LabelValue = {
   label: string;
   value: string;
 };
@@ -19,7 +19,7 @@ export type CardProps = {
 
 export const Card: React.FC<CardProps> = props => (
   <Container>
-    {props.image && <ImageSC source={{uri: props.image}} />}
+    {props.image && <ImageSC testID="card-image" source={{uri: props.image}} />}
     <LabelContainer>
       {props.fields.map(item => (
         <LabelText>
