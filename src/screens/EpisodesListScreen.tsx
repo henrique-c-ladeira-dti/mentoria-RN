@@ -13,13 +13,14 @@ import {Card, CardProps} from '../components/Card/Card';
 export const EpisodesListScreen: React.FC = () => {
   const {episodes, error, loading} = useGetEpisodes();
 
-  const episodesCardFields: CardProps[] = episodes.map(item => ({
-    fields: [
-      {label: 'Name', value: item.name},
-      {label: 'Episode', value: item.episode},
-      {label: 'Characters', value: item.characters.join(', ')},
-    ],
-  }));
+  const episodesCardFields: CardProps[] =
+    episodes?.map(item => ({
+      fields: [
+        {label: 'Name', value: item.name},
+        {label: 'Episode', value: item.episode},
+        {label: 'Characters', value: item.characters.join(', ')},
+      ],
+    })) ?? [];
 
   return (
     <SafeAreaView>

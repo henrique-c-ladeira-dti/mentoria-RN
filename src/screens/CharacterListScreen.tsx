@@ -13,15 +13,16 @@ import {Card, CardProps} from '../components/Card/Card';
 export const CharacterListScreen: React.FC = () => {
   const {characters, error, loading} = useGetCharacters();
 
-  const charactersCardFields: CardProps[] = characters.map(item => ({
-    image: item.image,
-    fields: [
-      {label: 'Name', value: item.name},
-      {label: 'Gender', value: item.gender},
-      {label: 'Species', value: item.species},
-      {label: 'Status', value: item.status},
-    ],
-  }));
+  const charactersCardFields: CardProps[] =
+    characters?.map(item => ({
+      image: item.image,
+      fields: [
+        {label: 'Name', value: item.name},
+        {label: 'Gender', value: item.gender},
+        {label: 'Species', value: item.species},
+        {label: 'Status', value: item.status},
+      ],
+    })) ?? [];
 
   return (
     <SafeAreaView>

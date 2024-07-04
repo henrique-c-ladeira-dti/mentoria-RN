@@ -1,31 +1,16 @@
-import {useEffect, useState} from 'react';
 import {CharacterResult, CharactersApiResponse} from '../apiTypes/characters';
 import axios from 'axios';
+import {usePromise} from './common/usePromise';
 
 export const useGetCharacters = () => {
-  const [characters, setCharacters] = useState<CharacterResult[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
-
-  const getCharacters = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-      const response = await axios<CharactersApiResponse>({
-        url: 'https://rickandmortyapi.com/api/character',
-      });
-      const {data} = response;
-      setCharacters(data.results);
-    } catch (err) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+  const promise = async (): Promise<CharacterResult[]> => {
+    const response = await axios<CharactersApiResponse>({
+      url: 'https://rickandmortyapi.com/api/character',
+    });
+    return response.data.results;
   };
 
-  useEffect(() => {
-    getCharacters();
-  }, []);
+  const {data: characters, error, loading} = usePromise(promise);
 
   return {
     characters,
