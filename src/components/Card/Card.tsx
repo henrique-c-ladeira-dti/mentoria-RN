@@ -15,10 +15,11 @@ export type LabelValue = {
 export type CardProps = {
   image?: string;
   fields: LabelValue[];
+  onPress?: () => void;
 };
 
 export const Card: React.FC<CardProps> = props => (
-  <Container>
+  <Container onPress={() => props?.onPress?.()}>
     {props.image && <ImageSC testID="card-image" source={{uri: props.image}} />}
     <LabelContainer>
       {props.fields.map(item => (

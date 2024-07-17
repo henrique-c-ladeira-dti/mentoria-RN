@@ -1,6 +1,6 @@
 import {CharacterResult, CharactersApiResponse} from '../apiTypes/characters';
 import axios from 'axios';
-import {usePromise} from './common/usePromise';
+import {usePromise} from './common/usePromise/usePromise';
 
 export const useGetCharacters = () => {
   const promise = async (): Promise<CharacterResult[]> => {

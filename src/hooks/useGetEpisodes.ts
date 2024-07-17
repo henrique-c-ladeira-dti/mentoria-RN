@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {EpisodesApiResponse, EpisodesResult} from '../apiTypes/episodes';
-import {usePromise} from './common/usePromise';
+import {usePromise} from './common/usePromise/usePromise';
 
 export const useGetEpisodes = () => {
   const promise = async (): Promise<EpisodesResult[]> => {

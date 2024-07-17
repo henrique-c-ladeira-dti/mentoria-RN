@@ -9,9 +9,13 @@ import {
   View,
 } from 'react-native';
 import {Card, CardProps} from '../components/Card/Card';
+import {useAppDispatch} from '../hooks/common/useRedux/useRedux';
+import {MyCharacterSelection} from '../features/MyCharacterSelection/views/MyCharacterSelection';
+import {addCharacter} from '../features/MyCharacterSelection/store/myCharacterSelectionSlice';
 
 export const CharacterListScreen: React.FC = () => {
   const {characters, error, loading} = useGetCharacters();
+  const dispatch = useAppDispatch();
 
   const charactersCardFields: CardProps[] =
     characters?.map(item => ({
@@ -24,14 +28,24 @@ export const CharacterListScreen: React.FC = () => {
       ],
     })) ?? [];
 
+  const makeOnPressCard = (item: CardProps) => () => {
+    dispatch(addCharacter(item.image ?? ''));
+  };
+
   return (
     <SafeAreaView>
+      <MyCharacterSelection />
       <ScrollView style={styles.container}>
         {loading && <ActivityIndicator size="large" />}
         {error && <Text>Error</Text>}
         <View style={styles.listContainer}>
           {charactersCardFields.map(item => (
-            <Card key={item.image} image={item.image} fields={item.fields} />
+            <Card
+              onPress={makeOnPressCard(item)}
+              key={item.image}
+              image={item.image}
+              fields={item.fields}
+            />
           ))}
         </View>
       </ScrollView>

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {useGetEpisodes} from '../hooks/useGetEpisodes';
 import {Card, CardProps} from '../components/Card/Card';
+import {MyCharacterSelection} from '../features/MyCharacterSelection/views/MyCharacterSelection';
 
 export const EpisodesListScreen: React.FC = () => {
   const {episodes, error, loading} = useGetEpisodes();
@@ -24,6 +25,7 @@ export const EpisodesListScreen: React.FC = () => {
 
   return (
     <SafeAreaView>
+      <MyCharacterSelection />
       <ScrollView style={styles.container}>
         {loading && <ActivityIndicator size="large" />}
         {error && <Text>Error</Text>}
