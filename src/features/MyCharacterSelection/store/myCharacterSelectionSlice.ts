@@ -16,6 +16,9 @@ export const myCharacterSelectionSlice = createSlice({
       state.list = [];
     },
     addCharacter: (state, action: PayloadAction<string>) => {
+      if (state.list.some(item => item === action.payload)) {
+        return state;
+      }
       state.list = [...state.list, action.payload];
     },
     removeCharacter: (state, action: PayloadAction<string>) => {

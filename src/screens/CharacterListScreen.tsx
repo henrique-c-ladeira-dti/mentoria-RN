@@ -12,6 +12,10 @@ import {Card, CardProps} from '../components/Card/Card';
 import {useAppDispatch} from '../hooks/common/useRedux/useRedux';
 import {MyCharacterSelection} from '../features/MyCharacterSelection/views/MyCharacterSelection';
 import {addCharacter} from '../features/MyCharacterSelection/store/myCharacterSelectionSlice';
+import Animated, {
+  FadeInDown,
+  SequencedTransition,
+} from 'react-native-reanimated';
 
 export const CharacterListScreen: React.FC = () => {
   const {characters, error, loading} = useGetCharacters();
@@ -35,12 +39,15 @@ export const CharacterListScreen: React.FC = () => {
   return (
     <SafeAreaView>
       <MyCharacterSelection />
-      <ScrollView style={styles.container}>
+      <Animated.ScrollView
+        style={styles.container}
+        layout={SequencedTransition}>
         {loading && <ActivityIndicator size="large" />}
         {error && <Text>Error</Text>}
         <View style={styles.listContainer}>
-          {charactersCardFields.map(item => (
+          {charactersCardFields.map((item, index) => (
             <Card
+              entering={FadeInDown.duration(1000).delay(200 * index)}
               onPress={makeOnPressCard(item)}
               key={item.image}
               image={item.image}
@@ -48,7 +55,7 @@ export const CharacterListScreen: React.FC = () => {
             />
           ))}
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
     </SafeAreaView>
   );
 };

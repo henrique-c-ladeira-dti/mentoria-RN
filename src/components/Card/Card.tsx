@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import {
   Container,
   ImageSC,
@@ -6,6 +6,7 @@ import {
   LabelText,
   ValueText,
 } from './Card.styled';
+import Animated from 'react-native-reanimated';
 
 export type LabelValue = {
   label: string;
@@ -18,8 +19,8 @@ export type CardProps = {
   onPress?: () => void;
 };
 
-export const Card: React.FC<CardProps> = props => (
-  <Container onPress={() => props?.onPress?.()}>
+const StaticCard: React.FC<CardProps> = forwardRef((props, ref) => (
+  <Container ref={ref} onPress={() => props?.onPress?.()}>
     {props.image && <ImageSC testID="card-image" source={{uri: props.image}} />}
     <LabelContainer>
       {props.fields.map(item => (
@@ -29,4 +30,6 @@ export const Card: React.FC<CardProps> = props => (
       ))}
     </LabelContainer>
   </Container>
-);
+));
+
+export const Card = Animated.createAnimatedComponent(StaticCard);
