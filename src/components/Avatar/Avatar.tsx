@@ -8,14 +8,15 @@ type AvatarProps = {
   onPress?: () => void;
 } & TouchableOpacityProps;
 
-const StaticAvatar: React.FC<AvatarProps> = forwardRef(
-  ({onPress, image, ...otherProps}, ref) => {
-    return (
-      <TouchableOpacity ref={ref} onPress={onPress} {...otherProps}>
-        <ImageSC source={{uri: image}} />
-      </TouchableOpacity>
-    );
-  },
-);
+const StaticAvatar: React.FC<AvatarProps> = forwardRef<
+  TouchableOpacity,
+  AvatarProps
+>(({onPress, image, ...otherProps}, ref) => {
+  return (
+    <TouchableOpacity ref={ref} onPress={onPress} {...otherProps}>
+      <ImageSC source={{uri: image}} />
+    </TouchableOpacity>
+  );
+});
 
 export const Avatar = Animated.createAnimatedComponent(StaticAvatar);
