@@ -3,7 +3,6 @@ import {useGetCharacters} from '../hooks/useGetCharacters';
 import {
   ActivityIndicator,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   View,

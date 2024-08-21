@@ -10,6 +10,10 @@ import {Routes} from './Routes';
 import {Provider} from 'react-redux';
 import store from '../store/store';
 
+if (__DEV__) {
+  require('../utils/reactotron');
+}
+
 const App: React.FC = () => (
   <Provider store={store}>
     <Routes />

@@ -1,10 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
 import myCharacterSelectionReducer from '../features/MyCharacterSelection/store/myCharacterSelectionSlice';
+import {tron} from '../utils/reactotron';
 
 const store = configureStore({
   reducer: {
     myCharacterSelection: myCharacterSelectionReducer,
   },
+  // middleware: getDefaultMiddleware => getDefaultMiddleware(),
+  enhancers: (__DEV__ ? [tron?.createEnhancer()] : []) as any,
 });
 
 export default store;
