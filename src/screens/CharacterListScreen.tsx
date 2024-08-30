@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useGetCharacters} from '../hooks/useGetCharacters';
 import {
   ActivityIndicator,
+  FlatList,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -11,13 +12,12 @@ import {Card, CardProps} from '../components/Card/Card';
 import {useAppDispatch} from '../hooks/common/useRedux/useRedux';
 import {MyCharacterSelection} from '../features/MyCharacterSelection/views/MyCharacterSelection';
 import {addCharacter} from '../features/MyCharacterSelection/store/myCharacterSelectionSlice';
-import Animated, {
-  FadeInDown,
-  SequencedTransition,
-} from 'react-native-reanimated';
+import {FadeInDown} from 'react-native-reanimated';
+import {PaginationList} from '../components/PaginationList/PaginationList';
 
 export const CharacterListScreen: React.FC = () => {
-  const {characters, error, loading} = useGetCharacters();
+  const [page, setPage] = useState(1);
+  const {characters, error, loading, info} = useGetCharacters(page);
   const dispatch = useAppDispatch();
 
   const charactersCardFields: CardProps[] =
@@ -35,26 +35,44 @@ export const CharacterListScreen: React.FC = () => {
     dispatch(addCharacter(item.image ?? ''));
   };
 
+  const onPressNext = () => {
+    setPage(prev => prev + 1);
+  };
+  const onPressPrevious = () => {
+    if (page > 1) {
+      setPage(prev => prev - 1);
+    }
+  };
+
   return (
     <SafeAreaView>
       <MyCharacterSelection />
-      <Animated.ScrollView
-        style={styles.container}
-        layout={SequencedTransition}>
+      <View style={styles.container}>
         {loading && <ActivityIndicator size="large" />}
         {error && <Text>Error</Text>}
-        <View style={styles.listContainer}>
-          {charactersCardFields.map((item, index) => (
+        <FlatList
+          onEndReached={() => console.tron?.log('chegou')}
+          data={charactersCardFields}
+          renderItem={({item}) => (
             <Card
-              entering={FadeInDown.duration(1000).delay(200 * index)}
+              entering={FadeInDown.duration(1000)}
               onPress={makeOnPressCard(item)}
               key={item.image}
               image={item.image}
               fields={item.fields}
             />
-          ))}
-        </View>
-      </Animated.ScrollView>
+          )}
+          ListFooterComponentStyle={{paddingBottom: 80}}
+          ListFooterComponent={
+            <PaginationList
+              page={page}
+              numberOfPages={info?.pages}
+              onPressNext={onPressNext}
+              onPressPrevious={onPressPrevious}
+            />
+          }
+        />
+      </View>
     </SafeAreaView>
   );
 };

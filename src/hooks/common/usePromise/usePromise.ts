@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-type PromiseStatus = {
+export type PromiseStatus = {
   loading: boolean;
   error: boolean;
 };
