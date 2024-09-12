@@ -8,7 +8,7 @@ const BottomTab = createBottomTabNavigator();
 
 export const Routes: React.FC = () => (
   <NavigationContainer>
-    <BottomTab.Navigator>
+    <BottomTab.Navigator screenOptions={{unmountOnBlur: true}}>
       <BottomTab.Screen name="Character List" component={CharacterListScreen} />
       <BottomTab.Screen name="Episodes List" component={EpisodesListScreen} />
     </BottomTab.Navigator>

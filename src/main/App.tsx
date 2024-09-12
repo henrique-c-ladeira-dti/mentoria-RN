@@ -9,15 +9,24 @@ import React from 'react';
 import {Routes} from './Routes';
 import {Provider} from 'react-redux';
 import store from '../store/store';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
 if (__DEV__) {
   require('../utils/reactotron');
 }
 
-const App: React.FC = () => (
-  <Provider store={store}>
-    <Routes />
-  </Provider>
-);
+const queryClient = new QueryClient();
 
-export default App;
+const App = () => {
+  return (
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  );
+};
+
+export default () => (
+  <QueryClientProvider client={queryClient}>
+    <App />
+  </QueryClientProvider>
+);

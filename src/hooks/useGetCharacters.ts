@@ -1,32 +1,26 @@
 import {CharactersApiResponse} from '../apiTypes/characters';
 import axios from 'axios';
-import {PromiseStatus} from './common/usePromise/usePromise';
-import {useEffect, useState} from 'react';
+import {useQuery} from '@tanstack/react-query';
 
 export const useGetCharacters = (page = 1) => {
-  const [data, setData] = useState<CharactersApiResponse>();
-  const [promiseStatus, setPromiseStatus] = useState<PromiseStatus>({
-    error: false,
-    loading: false,
+  const promise = async (currentPage: number) => {
+    const response = await axios<CharactersApiResponse>({
+      url: `https://rickandmortyapi.com/api/character?page=${currentPage}`,
+    });
+
+    return response.data;
+  };
+
+  const {data, isError, isLoading} = useQuery({
+    queryKey: ['getCharacters', page],
+    queryFn: () => promise(page),
+    staleTime: Infinity,
   });
 
-  useEffect(() => {
-    const executePromise = async () => {
-      try {
-        setPromiseStatus({error: false, loading: true});
-        const response = await axios<CharactersApiResponse>({
-          url: `https://rickandmortyapi.com/api/character?page=${page}`,
-        });
-        setData(response.data);
-        setPromiseStatus({error: false, loading: false});
-      } catch {
-        setData(undefined);
-        setPromiseStatus({error: true, loading: false});
-      }
-    };
-
-    executePromise();
-  }, [page]);
+  const promiseStatus = {
+    error: isError,
+    loading: isLoading,
+  };
 
   return {
     characters: data?.results,

@@ -1,51 +1,40 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ActivityIndicator, FlatList, SafeAreaView, Text} from 'react-native';
 import {useGetEpisodes} from '../hooks/useGetEpisodes';
 import {Card, CardProps} from '../components/Card/Card';
 import {MyCharacterSelection} from '../features/MyCharacterSelection/views/MyCharacterSelection';
+import {FadeInDown} from 'react-native-reanimated';
 
 export const EpisodesListScreen: React.FC = () => {
-  const {episodes, error, loading} = useGetEpisodes();
+  const {episodes, error, loading, fetchNextPage} = useGetEpisodes();
 
   const episodesCardFields: CardProps[] =
     episodes?.map(item => ({
       fields: [
         {label: 'Name', value: item.name},
         {label: 'Episode', value: item.episode},
-        {label: 'Characters', value: item.characters.join(', ')},
+        // {label: 'Characters', value: item.characters.join(', ')},
       ],
     })) ?? [];
 
   return (
     <SafeAreaView>
-      <MyCharacterSelection />
-      <ScrollView style={styles.container}>
-        {loading && <ActivityIndicator size="large" />}
-        {error && <Text>Error</Text>}
-        <View style={styles.listContainer}>
-          {episodesCardFields.map(item => (
-            <Card key={item.fields?.[0]?.value} fields={item.fields} />
-          ))}
-        </View>
-      </ScrollView>
+      {error && <Text>Error</Text>}
+      <FlatList
+        ListHeaderComponent={<MyCharacterSelection />}
+        onEndReached={() => fetchNextPage()}
+        data={episodesCardFields}
+        renderItem={({item}) => (
+          <Card
+            entering={FadeInDown.duration(1000)}
+            key={item.image}
+            image={item.image}
+            fields={item.fields}
+          />
+        )}
+        ListFooterComponentStyle={{paddingBottom: 80}}
+      />
+      {loading && <ActivityIndicator size="large" />}
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-  },
-  listContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-});

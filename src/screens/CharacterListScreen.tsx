@@ -46,13 +46,13 @@ export const CharacterListScreen: React.FC = () => {
 
   return (
     <SafeAreaView>
-      <MyCharacterSelection />
       <View style={styles.container}>
         {loading && <ActivityIndicator size="large" />}
         {error && <Text>Error</Text>}
         <FlatList
-          onEndReached={() => console.tron?.log('chegou')}
+          ListHeaderComponent={<MyCharacterSelection />}
           data={charactersCardFields}
+          numColumns={2}
           renderItem={({item}) => (
             <Card
               entering={FadeInDown.duration(1000)}
