@@ -9,16 +9,15 @@ import {
   View,
 } from 'react-native';
 import {Card, CardProps} from '../components/Card/Card';
-import {useAppDispatch} from '../hooks/common/useRedux/useRedux';
-import {MyCharacterSelection} from '../features/MyCharacterSelection/views/MyCharacterSelection';
-import {addCharacter} from '../features/MyCharacterSelection/store/myCharacterSelectionSlice';
 import {FadeInDown} from 'react-native-reanimated';
 import {PaginationList} from '../components/PaginationList/PaginationList';
+import {useAddToCharacterSelection} from '../hooks/useAddToCharacterSelection';
+import {CharacterSelectionList} from '../components/CharacterSelectionList/CharacterSelectionList';
 
 export const CharacterListScreen: React.FC = () => {
   const [page, setPage] = useState(1);
   const {characters, error, loading, info} = useGetCharacters(page);
-  const dispatch = useAppDispatch();
+  const {addToCharacterSelection} = useAddToCharacterSelection();
 
   const charactersCardFields: CardProps[] =
     characters?.map(item => ({
@@ -32,7 +31,7 @@ export const CharacterListScreen: React.FC = () => {
     })) ?? [];
 
   const makeOnPressCard = (item: CardProps) => () => {
-    dispatch(addCharacter(item.image ?? ''));
+    addToCharacterSelection(item.image ?? '');
   };
 
   const onPressNext = () => {
@@ -50,7 +49,7 @@ export const CharacterListScreen: React.FC = () => {
         {loading && <ActivityIndicator size="large" />}
         {error && <Text>Error</Text>}
         <FlatList
-          ListHeaderComponent={<MyCharacterSelection />}
+          ListHeaderComponent={<CharacterSelectionList />}
           data={charactersCardFields}
           numColumns={2}
           renderItem={({item}) => (
