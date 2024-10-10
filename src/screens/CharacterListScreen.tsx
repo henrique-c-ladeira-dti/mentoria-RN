@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useGetCharacters} from '../hooks/useGetCharacters';
 import {
   ActivityIndicator,
@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from 'react-native';
 import {Card, CardProps} from '../components/Card/Card';
@@ -18,9 +19,15 @@ export const CharacterListScreen: React.FC = () => {
   const [page, setPage] = useState(1);
   const {characters, error, loading, info} = useGetCharacters(page);
   const {addToCharacterSelection} = useAddToCharacterSelection();
+  const [searchText, setSearchText] = useState('');
+
+  const filteredCharacters = useMemo(
+    () => characters?.filter(item => item.name.includes(searchText)),
+    [characters, searchText],
+  );
 
   const charactersCardFields: CardProps[] =
-    characters?.map(item => ({
+    filteredCharacters?.map(item => ({
       image: item.image,
       fields: [
         {label: 'Name', value: item.name},
@@ -46,6 +53,11 @@ export const CharacterListScreen: React.FC = () => {
   return (
     <SafeAreaView>
       <View style={styles.container}>
+        <TextInput
+          value={searchText}
+          onChangeText={setSearchText}
+          style={styles.searchInput}
+        />
         {loading && <ActivityIndicator size="large" />}
         {error && <Text>Error</Text>}
         <FlatList
@@ -71,6 +83,19 @@ export const CharacterListScreen: React.FC = () => {
             />
           }
         />
+        {/* <ScrollView>
+          {charactersCardFields.map(item => (
+            <Card
+              entering={FadeInDown.duration(1000)}
+              exiting={FadeOut.duration(400)}
+              layout={SequencedTransition.duration(500)}
+              onPress={makeOnPressCard(item)}
+              key={item.image}
+              image={item.image}
+              fields={item.fields}
+            />
+          ))}
+        </ScrollView> */}
       </View>
     </SafeAreaView>
   );
@@ -84,5 +109,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
+  },
+  searchInput: {
+    padding: 8,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderRadius: 8,
   },
 });
